@@ -1,0 +1,18 @@
+#navbar {
+  background-color: blue;
+  margin: 10px;
+  padding: 20px;
+  width: 90%;
+}
+.nav-elt {
+  color: white;
+  background-color: black;
+  padding: 10px;
+  margin: 30px;
+  cursor:pointer;
+  text-decoration: none;
+  transition: background-color 0.1s;
+}
+.nav-elt:hover, .nav-elt:focus {
+    background-color: red;
+}
