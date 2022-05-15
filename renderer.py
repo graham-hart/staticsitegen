@@ -66,7 +66,7 @@ def render_single_file(path, text=None, template=None):
     try:
         s = text.split(HEADER_SPLITTER)
         meta = gen_meta(s[1])
-        content = s[2]
+        content = '\n'.join(s[2:])
     except:
         logger.warning(f"File {path} does not have metadata (or it's in the wrong format)")
 
