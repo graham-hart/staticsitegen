@@ -1,18 +1,28 @@
 #navbar {
-  background-color: blue;
-  margin: 10px;
-  padding: 20px;
-  width: 90%;
+  background: none;
+  margin:20px auto;
 }
 .nav-elt {
-  color: white;
-  background-color: black;
-  padding: 10px;
-  margin: 30px;
-  cursor:pointer;
+  --accent-color: #b255ed;
+  border: 1px solid var(--accent-color);
+  border-radius: 20px;
+  padding: 10px 20px;
   text-decoration: none;
-  transition: background-color 0.1s;
+  color: var(--accent-color);
+  margin: 0px 10px;
+  transition: background-color ease-in 0.2s;
 }
 .nav-elt:hover, .nav-elt:focus {
-    background-color: red;
+  background-color: #b595c9aa;
+  --accent-color: #1f1f1f;
+  outline: none;
+  border:1px solid none;
+}
+html {
+  background: linear-gradient(#322638, #2a1e30) no-repeat;
+  height: 100%;
+}
+body {
+  height: 100%;
+  color: #f1f1f1;
 }

@@ -1,0 +1,5 @@
+default_template: 'template.html'
+navbar:
+  'Home': '/'
+  'About': '/about.html'
+  'Blogs': '/blogs/'
