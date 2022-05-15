@@ -7,28 +7,29 @@ import socketserver
 import os
 
 class DebugHTTPEventHandler(http.server.SimpleHTTPRequestHandler):
-    def do_GET(self):
+    def do_GET(self): 
+        # Path formatting
         if self.path.endswith("/"):
             self.path += "index.html"
-        if not self.path.endswith(".html"):
+        elif not self.path.endswith(".html"): # If not requesting an html file, treat it like any other GET
             self.path = os.path.join("/site", self.path[1:])
             return http.server.SimpleHTTPRequestHandler.do_GET(self)
-        self.path = os.path.join(renderer.SITE_DIR, 'content', self.path[1:-5] + ".md")
+        
 
 
-        # Sending an '200 OK' response
+        # Various HTTP nonsense
         self.send_response(200)
-
-        # Setting the header
         self.send_header("Content-type", "text/html")
-
-        # Whenever using 'send_header', you also have to call 'end_headers'
         self.end_headers()
 
-        # Writing the HTML contents with UTF-8
-        html = renderer.render_single_file(self.path)
+        # Construct path
+
+        path = os.path.join(renderer.SITE_DIR, 'content',
+                            self.path[1:-5] + ".md")
+
+        # Send rendered HTML to user
+        html = renderer.render_single_file(path)
         self.wfile.write(bytes(html, "utf8"))
-        print("DEVEL GET")
         return
 
 

@@ -8,7 +8,17 @@ import shutil
 import yaml
 import mistletoe
 
-# Generate a file tree where keys are file names and values are contents 
+
+# Global config stuff
+NAV_LINKS = None
+ENV = None
+CONFIG = None
+SITE_DIR = "site"
+OUTPUT_DIR = "rendered"
+TEMPLATES = None
+FILE_TREE = None
+
+# Generate a file tree where keys are file names and values are contents
 # Structure:
 """
 {
@@ -21,15 +31,6 @@ import mistletoe
     }
 }
 """
-
-NAV_LINKS = None
-ENV = None
-CONFIG = None
-SITE_DIR = "site"
-OUTPUT_DIR = "rendered"
-TEMPLATES = None
-FILE_TREE = None
-
 
 def gen_file_tree(path, remove_str=None):
     if remove_str is None:
@@ -54,10 +55,14 @@ def gen_meta(header):
 
     return meta
 
+
+# TODO: Add support for rendering files that don't exist (aka landing pages for different directories that should be auto-generated)
 def render_single_file(path, text=None, template=None):
     HEADER_SPLITTER = "---" # String to use to separate out header
-    template = template or TEMPLATES[CONFIG["default_template"]]
-    text = text or open(path, "r").read()
+    template = template or TEMPLATES[CONFIG["default_template"]] # Find template if none given
+    text = text or open(path, "r").read() # Load text if none given
+
+    # Generate metadata and content
     try:
         s = text.split(HEADER_SPLITTER)
         meta = gen_meta(s[1])
@@ -75,7 +80,8 @@ def render_single_file(path, text=None, template=None):
 
 # Recursive function to generate formatted html pages into out_path
 # Options for multiple templates using the config, but this may require some tinkering
-# Uses mistletoe(https://github.com/miyuchina/mistletoe) to render markdown to html
+# Renders markdown to html
+
 def generate_pages(current_dir, file_tree=None):
     file_tree = file_tree or FILE_TREE
     # Load config
@@ -95,7 +101,8 @@ def generate_pages(current_dir, file_tree=None):
             
             # Render landing page for folder 
             # TODO: Add more customizability for this option
-            out = TEMPLATES['base.html'].render(txt=f, nav_links=NAV_LINKS)
+            out = render_single_file(f"{OUTPUT_DIR}{f}/index.md",
+                               template=TEMPLATES['base.html'])
             with open(f"{OUTPUT_DIR}{f}/index.html", "w") as file:
                 file.write(out)
 
