@@ -1,4 +1,4 @@
-default_template: 'template.html'
+default_template: 'template'
 navbar:
   'Home': '/'
   'About': '/about.html'

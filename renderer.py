@@ -59,9 +59,9 @@ def gen_meta(header):
 # TODO: Add support for rendering files that don't exist (aka landing pages for different directories that should be auto-generated)
 def render_single_file(path, text=None, template=None):
     HEADER_SPLITTER = "---" # String to use to separate out header
-    template = template or TEMPLATES[CONFIG["default_template"]] # Find template if none given
-    text = text or open(path, "r").read() # Load text if none given
-
+    text = text if text is not None else open(path, "r").read() # Load text if none given
+    content = ""
+    meta = {}
     # Generate metadata and content
     try:
         s = text.split(HEADER_SPLITTER)
@@ -70,6 +70,8 @@ def render_single_file(path, text=None, template=None):
     except:
         logger.warning(f"File {path} does not have metadata (or it's in the wrong format)")
 
+    template = template or TEMPLATES[meta.get(
+            "template", CONFIG["default_template"])]
 
     # TODO: Add audio and video embed support to rendering (https://github.com/miyuchina/mistletoe and https://talk.commonmark.org/t/embedded-audio-and-video/441)
     rendered = mistletoe.markdown(content)
@@ -84,12 +86,6 @@ def render_single_file(path, text=None, template=None):
 
 def generate_pages(current_dir, file_tree=None):
     file_tree = file_tree or FILE_TREE
-    # Load config
-    local_conf = None
-    if "config.yml" in os.listdir(current_dir):
-        with open(os.path.join(current_dir, 'config.yml')) as f:
-            local_conf = yaml.load(f, Loader=yaml.SafeLoader)
-    
 
     # Iterate through all paths in file tree at current directory level
     for f in file_tree.keys():
@@ -100,18 +96,14 @@ def generate_pages(current_dir, file_tree=None):
             os.mkdir(f"{OUTPUT_DIR}{f}/")
             
             # Render landing page for folder 
-            # TODO: Add more customizability for this option
-            out = render_single_file(f"{OUTPUT_DIR}{f}/index.md",
-                               template=TEMPLATES['base.html'])
+            out = render_single_file(os.path.join(f, "index.html"), text="A", template=TEMPLATES['base'])
             with open(f"{OUTPUT_DIR}{f}/index.html", "w") as file:
                 file.write(out)
 
             # Call function recursively on current path
             generate_pages(os.path.join(current_dir, f[1:]), file_tree=file_tree[f])
         elif f.endswith('.md'):
-            # Figure out which template to use
-            template = TEMPLATES[local_conf.get('template', CONFIG['default_template'])] if local_conf else TEMPLATES[CONFIG['default_template']]
-            out = render_single_file(f, text=file_tree[f], template=template)
+            out = render_single_file(f, text=file_tree[f])
             with open(f"{OUTPUT_DIR}/{os.path.splitext(f)[0]}.html", "w") as file:
                 file.write(out)
 
@@ -129,7 +121,7 @@ def setup(template_path):
 def load_templates(path): # Load all templates into a dict
     templates = {}
     for t in os.listdir(path):
-        templates[t] = ENV.get_template(t)
+        templates[os.path.splitext(t)[0]] = ENV.get_template(t)
     return templates
 
 def generate_site():

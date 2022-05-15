@@ -19,10 +19,42 @@
   border:1px solid none;
 }
 html {
-  background: linear-gradient(#322638, #2a1e30) no-repeat;
   height: 100%;
 }
 body {
   height: 100%;
-  color: #f1f1f1;
+}
+#page-title {
+  margin:auto;
+  text-align: center;
+}
+#article {
+  border-radius: 4px;
+  background-color: #faf2ff;
+  color: #1f3a2f;
+  width: 75%;
+  margin: 50px auto;
+  padding: 20px;
+  /* color: #2f2f2f; */
+}
+#byline {
+  color: #a1a1a1
+}
+blockquote {
+  border-left: 3px solid lightskyblue;
+  padding-left: 3px;
+}
+
+code {
+  background-color: #f1f1f1;
+  padding: 5px;
+  border-radius: 2px;
+}
+pre > code {
+  width: 75%;
+  margin: auto;
+  display: block;
+}
+p > a {
+  color: skyblue;
 }

@@ -5,9 +5,10 @@ import renderer
 import http.server
 import socketserver
 import os
-
+args = None
 class DebugHTTPEventHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self): 
+
         # Path formatting
         if self.path.endswith("/"):
             self.path += "index.html"
@@ -22,11 +23,13 @@ class DebugHTTPEventHandler(http.server.SimpleHTTPRequestHandler):
         self.send_header("Content-type", "text/html")
         self.end_headers()
 
-        # Construct path
+        # Reload templates if on template dev mode
+        if args.td__template_dev:
+            renderer.TEMPLATES = renderer.load_templates("templates/")
 
+        # Construct path
         path = os.path.join(renderer.SITE_DIR, 'content',
                             self.path[1:-5] + ".md")
-
         # Send rendered HTML to user
         html = renderer.render_single_file(path)
         self.wfile.write(bytes(html, "utf8"))
@@ -43,9 +46,11 @@ def parse_args():
     parser.add_argument("-i", "--input", default="./site", help="Site input folder")
     parser.add_argument("-p", "--port", default=8080, help="Port for server", type=int)
     parser.add_argument("-d", "--debug", default=False, help="Whether to run in debug (on-the-fly rendering) or production mode", action="store_true")
+    parser.add_argument("-td" "--template-dev", default=False, action="store_true", help="Whether to run in template dev mode (where templates are reloaded on render)")
     return parser.parse_args()
 
 def main():
+    global args
     args = parse_args()
     renderer.SITE_DIR = args.input
     renderer.setup('templates/')
