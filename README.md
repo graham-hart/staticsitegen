@@ -37,7 +37,6 @@ Requirements:
 - Jinja2 
 - Mistletoe 
 - PyYAML 
-- Watchdog
 
 ## Usage
 

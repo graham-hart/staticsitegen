@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}{{meta['title']}} - {{meta['author']}}{%endblock%}
+{% block content %}
+    <!-- Generated with blog template -->
+    <div id="article">
+        <h2>{{meta['title']}}</h2>
+        <span id="byline">
+            <p>{{meta['author']}}</p>
+            <p>{{meta['time']}}</p>
+            <p>{{meta['date']}}</p>
+        </span>
+        {{content}}
+    </div>
+{% endblock %}
