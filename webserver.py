@@ -28,8 +28,7 @@ class DebugHTTPEventHandler(http.server.SimpleHTTPRequestHandler):
             renderer.TEMPLATES = renderer.load_templates("templates/")
 
         # Construct path
-        path = os.path.join(renderer.SITE_DIR, 'content',
-                            self.path[1:-5] + ".md")
+        path = os.path.join(self.path[1:-5] + ".md")
         # Send rendered HTML to user
         html = renderer.render_single_file(path)
         self.wfile.write(bytes(html, "utf8"))

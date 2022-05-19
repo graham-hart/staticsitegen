@@ -3,3 +3,5 @@ navbar:
   'Home': '/'
   'About': '/about.html'
   'Blogs': '/blogs/'
+landing_page_template:
+  blog-landing

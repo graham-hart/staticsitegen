@@ -32,7 +32,6 @@ body {
   border-radius: 4px;
   background-color: #faf2ff;
   color: #1f3a2f;
-  width: 75%;
   margin: 50px auto;
   padding: 20px;
   /* color: #2f2f2f; */
@@ -55,6 +54,13 @@ pre > code {
   margin: auto;
   display: block;
 }
-p > a {
+a {
   color: skyblue;
+}
+#content {
+  margin: auto;
+  width: 75%;
+}
+h1 {
+  text-align: center;
 }

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}{{title}}{%endblock%}
+{% block content %}
+    <!-- Generated with blog template -->
+    <h1>Blogs</h1>
+    <hr>
+    {%for pg in pages %}
+    <div class="page-desc">
+        <h3><a href="{{pg['link']}}">{{pg['title']}}</a></h3>
+        <h5>{{pg['author']}}</h5>
+        <p>{{pg['preview']}}</p>
+    </div>
+    <hr>
+    {%endfor%}
+{% endblock %}

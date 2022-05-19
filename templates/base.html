@@ -13,8 +13,11 @@
             <a class="nav-elt" href="{{elt[1]}}">{{elt[0]}}</a>
         {% endfor %}
     </div>
+    
+    <div id="content">
     {% block content%}
     {{content}}
     {% endblock %}
+    </div>
 </body>
 </html>
